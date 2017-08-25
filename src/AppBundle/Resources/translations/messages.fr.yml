@@ -45,6 +45,10 @@ Delivery service: Service de livraison
 Add section: Ajouter une section
 Add a new item: Nouvel élément
 Delete: Supprimer
+Sorry: Désolé
+There a no restaurants available in this area: >
+  Nous n'avons pas trouvé de restaurant disponible dans cette zone
+Try searching again: Essayez de chercher à nouveau
 
 delivery_service.applicolis: AppliColis
 

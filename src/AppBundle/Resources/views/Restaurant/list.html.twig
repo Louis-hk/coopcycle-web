@@ -2,12 +2,29 @@
 
 {% block body %}
 <div class="container">
-  <div class="row">
-    <div class="col-xs-12">
-    {% include "AppBundle:Restaurant:pagination.html.twig" %}
+
+    {% if restaurants|length == 0 %}
+
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="alert alert-warning text-center">
+          <h4>{% trans %}Sorry{% endtrans %}</h4>
+          {% trans %}There a no restaurants available in this area{% endtrans %}
+          <br>
+          <br>
+          <a hef="{{ path('homepage') }}">{% trans %}Try searching again{% endtrans %}</a>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="row">
+
+    {% else %}
+
+    <div class="row">
+      <div class="col-xs-12">
+      {% include "AppBundle:Restaurant:pagination.html.twig" %}
+      </div>
+    </div>
+    <div class="row">
     {% for restaurant in restaurants %}
     <div class="col-sm-6 col-md-4">
 
@@ -53,11 +70,14 @@
 
     </div>
     {% endfor %}
-  </div>
-  <div class="row">
-    <div class="col-xs-12">
-    {% include "AppBundle:Restaurant:pagination.html.twig" %}
     </div>
-  </div>
+    <div class="row">
+      <div class="col-xs-12">
+      {% include "AppBundle:Restaurant:pagination.html.twig" %}
+      </div>
+    </div>
+
+    {% endif %}
+
 </div>
 {% endblock %}

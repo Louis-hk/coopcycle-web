@@ -1,6 +1,5 @@
 var Promise = require('promise');
-var _ = require('underscore');
-var async = require('async');
+var _ = require('underscore');;
 var RedisRepository = require('../RedisRepository');
 var CourierPool = require('./CourierPool');
 var Utils = require('../Utils');
@@ -78,7 +77,9 @@ Courier.prototype.toJSON = function() {
 
 Courier.nearestForOrder = function(order, distance) {
 
+
   var address = order.restaurant.address;
+
 
   return new Promise(function(resolve, reject) {
 
@@ -112,7 +113,7 @@ Courier.nearestForOrder = function(order, distance) {
       return resolve(Courier.Pool.findByKey(key));
     });
   });
-}
+};
 
 Courier.updateCoordinates = function(courier, coordinates) {
   if (courier.state === Courier.UNKNOWN) {
@@ -124,7 +125,7 @@ Courier.updateCoordinates = function(courier, coordinates) {
     coordinates.latitude,
     Utils.resolveKey('courier', courier.id)
   );
-}
+};
 
 var REDIS;
 
@@ -132,6 +133,6 @@ Courier.init = function(redis, redisPubSub) {
   Courier.Pool = new CourierPool(redis, redisPubSub);
   Courier.Repository = new RedisRepository(redis, 'courier');
   REDIS = redis;
-}
+};
 
 module.exports.Courier = Courier;

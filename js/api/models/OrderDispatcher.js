@@ -1,8 +1,15 @@
+var winston = require('winston');
+
 var REDIS;
 var TIMEOUT;
 
-var winston = require('winston');
+var orderDispatchedCount = 0;
+
 winston.level = process.env.NODE_ENV === 'production' ? 'info' : 'debug';
+
+function orderDispatchedCountLogger() {
+  winston.info(orderDispatchedCount + ' orders dispatched in the last 5 minutes');
+}
 
 function OrderDispatcher(redis, orderRegistry) {
   REDIS = redis;
@@ -18,9 +25,11 @@ function circularListHandler(orderRegistry, handler) {
   REDIS.rpoplpush('orders:waiting', 'orders:waiting', function(err, orderID) {
     if (err) throw err;
     if (!orderID) {
-      // winston.debug('No orders to process yet');
       return next(orderRegistry, handler);
     }
+
+    winston.debug('Found order to dispatch ' + orderID);
+
     orderRegistry.findById(orderID)
       .then(function(order) {
         handler.call(null, order, next.bind(null, orderRegistry, handler));
@@ -39,6 +48,7 @@ OrderDispatcher.prototype.setHandler = function(handler) {
 OrderDispatcher.prototype.start = function() {
   this.stop();
   circularListHandler(this.orderRegistry, this.handler);
+  setInterval(orderDispatchedCountLogger, 5 * 60000);
 };
 
 OrderDispatcher.prototype.stop = function() {

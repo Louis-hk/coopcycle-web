@@ -122,7 +122,6 @@ class RestaurantController extends Controller
             $dates[$translator->trans('Today')] = new \DateTime('today');
         }
         $dates[$translator->trans('Tomorrow')] = new \DateTime('tomorrow');
-        ;
 
         $times = [];
         $date = clone $nextOpeningDate;
@@ -132,11 +131,18 @@ class RestaurantController extends Controller
             $times[] = $date->format('H:i');
         }
 
+        $cart = $this->getCart($request, $restaurant);
+
+        // if (!$cart->getDate()) {
+        //     $cart->setDate($nextOpeningDate);
+        //     $this->saveCart($request, $cart);
+        // }
+
         return array(
             'restaurant' => $restaurant,
             'dates' => $dates,
             'times' => $times,
-            'cart' => $this->getCart($request, $restaurant),
+            'cart' => $cart,
         );
     }
 

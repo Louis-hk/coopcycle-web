@@ -38,7 +38,7 @@ class Core extends Base
 
         $this->redis->lpush(
             'deliveries:waiting',
-            $order->getId()
+            $order->getDelivery()->getId()
         );
     }
 }
